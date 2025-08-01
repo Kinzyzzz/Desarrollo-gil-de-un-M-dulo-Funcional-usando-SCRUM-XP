@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Usuarios</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Formulario de Registro</h1>
+    <form id="registroForm">
+      <input type="text" id="nombres" placeholder="Nombres" required />
+      <input type="text" id="apellidos" placeholder="Apellidos" required />
+      <input type="email" id="email" placeholder="Correo Electrónico" required />
+      <input type="text" id="motivo" placeholder="Motivo del Registro" required />
+      <input type="datetime-local" id="fechaHora" required />
+      <select id="prioridad" required>
+        <option value="Must Have">Must Have</option>
+        <option value="Should Have">Should Have</option>
+        <option value="Could Have">Could Have</option>
+      </select>
+      <button type="submit">Registrar</button>
+    </form>
+    <button onclick="location.href='index.html'">Volver</button>
+  </div>
+  <script>
+    document.getElementById('registroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nombres = document.getElementById('nombres').value;
+      const apellidos = document.getElementById('apellidos').value;
+      const email = document.getElementById('email').value;
+      const motivo = document.getElementById('motivo').value;
+      const fechaHora = document.getElementById('fechaHora').value;
+      const prioridad = document.getElementById('prioridad').value;
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+      usuarios.push({ nombres, apellidos, email, motivo, fechaHora, prioridad, cumplido: false });
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      alert('Registro guardado');
+      this.reset();
+    });
+  </script>
+</body>
+</html>

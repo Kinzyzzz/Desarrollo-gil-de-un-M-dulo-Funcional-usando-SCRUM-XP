@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor de Registros</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Editor de Registros</h1>
+    <ul id="listaUsuarios"></ul>
+    <button onclick="location.href='index.html'">Volver</button>
+  </div>
+
+  <script>
+    const lista = document.getElementById('listaUsuarios');
+
+    function cargarUsuarios() {
+      const usuariosJSON = localStorage.getItem('usuarios');
+      try {
+        return JSON.parse(usuariosJSON) || [];
+      } catch (e) {
+        console.error("Error al leer usuarios del localStorage", e);
+        return [];
+      }
+    }
+
+    function guardarUsuarios(usuarios) {
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    function render() {
+      const usuarios = cargarUsuarios();
+      lista.innerHTML = '';
+
+      if (usuarios.length === 0) {
+        lista.innerHTML = '<p style="color: white;">No hay registros disponibles.</p>';
+        return;
+      }
+
+      usuarios.forEach((u, i) => {
+        const li = document.createElement('li');
+        li.classList.add(u.prioridad?.replace(/ /g, '-') || 'Sin-Prioridad');
+        li.innerHTML = `
+          <strong>${u.nombres || ''} ${u.apellidos || ''}</strong><br>
+          Correo: ${u.email || ''}<br>
+          Motivo: ${u.motivo || ''}<br>
+          Fecha y hora: ${u.fechaHora || ''}<br>
+          Prioridad: <strong>${u.prioridad || ''}</strong><br>
+          Cumplido: <input type="checkbox" ${u.cumplido ? 'checked' : ''} onchange="toggleCumplido(${i})"><br>
+          <button onclick="editar(${i})">Editar</button>
+          <button onclick="eliminar(${i})">Eliminar</button>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    function editar(i) {
+      const usuarios = cargarUsuarios();
+      const u = usuarios[i];
+      const nombres = prompt("Nombres:", u.nombres);
+      const apellidos = prompt("Apellidos:", u.apellidos);
+      const email = prompt("Correo:", u.email);
+      const motivo = prompt("Motivo:", u.motivo);
+      const fechaHora = prompt("Fecha y hora:", u.fechaHora);
+      const prioridad = prompt("Prioridad (Must Have, Should Have, Could Have):", u.prioridad);
+
+      if (nombres && apellidos && email && motivo && fechaHora && prioridad) {
+        usuarios[i] = {
+          ...usuarios[i],
+          nombres,
+          apellidos,
+          email,
+          motivo,
+          fechaHora,
+          prioridad
+        };
+        guardarUsuarios(usuarios);
+        render();
+      }
+    }
+
+    function eliminar(i) {
+      const usuarios = cargarUsuarios();
+      if (confirm("¿Eliminar este registro?")) {
+        usuarios.splice(i, 1);
+        guardarUsuarios(usuarios);
+        render();
+      }
+    }
+
+    function toggleCumplido(i) {
+      const usuarios = cargarUsuarios();
+      usuarios[i].cumplido = !usuarios[i].cumplido;
+      guardarUsuarios(usuarios);
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>

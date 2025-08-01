@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido al Sistema</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="welcome">
+  <div class="container">
+    <h1>Bienvenido</h1>
+    <p>Elige una opción para continuar:</p>
+    <button onclick="location.href='registro.html'">Registro de Usuarios</button>
+    <button onclick="entrarEditor()">Editor de Registros</button>
+  </div>
+  <script>
+    function entrarEditor() {
+      const clave = prompt("Ingrese la clave para acceder al editor:");
+      if (clave === "1026") {
+        location.href = 'editor.html';
+      } else {
+        alert("Clave incorrecta");
+      }
+    }
+  </script>
+</body>
+</html>
