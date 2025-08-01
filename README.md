@@ -1,4 +1,4 @@
-# Desarrollo-gil-de-un-M-dulo-Funcional-usando-SCRUM-XP
+# Desarrollo-gil-de-un-Modulo-Funcional-usando-SCRUM-XP
 
 # Sistema de Registro de Usuarios
 
